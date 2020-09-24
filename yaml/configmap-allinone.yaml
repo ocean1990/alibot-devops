@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: albotssh-local-k8s-allinone
+  namespace: default
+data:
+  local-k8s: |
+    {
+      "port": "2222",
+      "authAddr": "localhost:9001",
+      "authTimeout": 2000,
+      "execAddr": "localhost:9099",
+      "execTimeout": 5000,
+      "hostKeyFile": "/id_rsa"
+    }

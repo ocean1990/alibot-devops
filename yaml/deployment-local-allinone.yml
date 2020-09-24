@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpd-bot-deployment-allinone
+spec:
+  selector:
+    matchLabels:
+      app: alpd-bot-ssh-allinone
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: alpd-bot-ssh-allinone
+    spec:
+      imagePullSecrets:
+        - name: registry-key
+      containers:
+        - name: alpd-bot-ssh-allinone
+          image: registry.cn-hangzhou.aliyuncs.com/whx1990/alpd-bot-ssh:latest
+          imagePullPolicy: Always
+          args: ["-cfg", "/etc/config/local-k8s"]
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+          ports:
+            - containerPort: 2222
+        - name: alpd-bot-query-allinone
+          image: registry.cn-hangzhou.aliyuncs.com/whx1990/alpd-bot-query:latest
+          imagePullPolicy: Always
+          env:
+            - name: WEATHER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: alpd-bot-query-cfg
+                  key: weather_api_key
+          ports:
+            - containerPort: 9099
+        - name: alpd-bot-auth-allinone
+          image: registry.cn-hangzhou.aliyuncs.com/whx1990/alpd-bot-auth:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9001
+      volumes:
+        - name: config-volume
+          configMap:
+            name: albotssh-local-k8s-allinone
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alpd-bot-allinone-svc
+spec:
+  selector:
+    app: alpd-bot-ssh-allinone
+  ports:
+    - name: ssh
+      protocol: TCP
+      port: 2223
+      targetPort: 2222

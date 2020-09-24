@@ -1,0 +1,20 @@
+{
+  "name": "alpd-bot-auth",
+  "version": "1.0.0",
+  "description": "authentication service for alpd-bot",
+  "repository": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter mochawesome"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.5",
+    "grpc": "^1.24.3"
+  },
+  "devDependencies": {
+    "mocha": "^8.1.3",
+    "mochawesome": "^6.1.1"
+  }
+}

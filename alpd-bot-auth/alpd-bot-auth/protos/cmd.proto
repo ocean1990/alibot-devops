@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "protos;protos";
+
+package alpd;
+
+service CommandService {
+  rpc ExecuteCommandV1 (CmdRequest) returns (CmdReply) {}
+}
+
+message CmdRequest {
+  RequestContext context = 1;
+  string name = 2;
+  repeated string args = 3;
+}
+
+message RequestContext {
+  string user = 1;
+  string remote_addr = 2;
+}
+
+message CmdReply {
+  string data = 1;
+}

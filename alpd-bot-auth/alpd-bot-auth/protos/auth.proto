@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "protos;protos";
+
+package alpd;
+
+service AuthService {
+  rpc authWithPasswordV1 (passwdRequest) returns (authReply) {}
+}
+
+message passwdRequest {
+  string user = 1;
+  string password = 2;
+}
+
+message authReply {
+  bool authenticated = 2;
+  string msg = 3;
+}
